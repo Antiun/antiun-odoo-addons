@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<act_window id="action_print_supplierinfo"
+    name="Print Pricelist"
+    res_model="product.supplierinfo.print.wizard"
+    src_model="product.supplierinfo"
+    view_mode="form"
+    multi="True"
+    target="new"
+    key2="client_action_multi"/>
+
+<report id="report_product_supplierinfo"
+    auto="False"
+    menu="False"
+    model="product.supplierinfo.print.wizard"
+    name="product_supplierinfo_report.product_supplierinfo_report"
+    string="Print Pricelist"
+    report_type="qweb-pdf"/>
+
+<!-- ============== SALES ============== -->
+
+<record id="view_sale_product_pricelsit_tree" model="ir.ui.view">
+    <field name="name">Product Pricelists</field>
+    <field name="model">product.supplierinfo</field>
+    <field name="priority">15</field>
+    <field name="arch" type="xml">
+        <tree string="Product Pricelists">
+            <field name="name" string="Customer"/>
+            <field name="product_tmpl_id" />
+            <field name="delay" />
+            <field name="min_qty" />
+            <field name="price" />
+        </tree>
+    </field>
+</record>
+
+<record id="view_sale_product_pricelsit_search" model="ir.ui.view">
+    <field name="name">Product Pricelists</field>
+    <field name="model">product.supplierinfo</field>
+    <field name="arch" type="xml">
+        <search string="Product Pricelists">
+            <field name="product_tmpl_id"/>
+            <field name="name" string="Customer"/>
+            <field name="product_name"/>
+            <field name="product_code"/>
+            <group expand="0" string="Group By">
+                <filter string="Product" domain="[]" context="{'group_by':'product_tmpl_id'}"/>
+                <filter string="Customer" domain="[]" context="{'group_by':'name'}"/>
+                <filter string="Partner Unit of Measure" domain="[]" context="{'group_by':'product_uom'}"/>
+                <filter string="Delivery Lead Time" domain="[]" context="{'group_by':'delay'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+<record id="action_sale_product_pricelist" model="ir.actions.act_window">
+    <field name="name">Product Pricelists</field>
+    <field name="res_model">product.supplierinfo</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('type', '=', 'customer')]</field>
+    <field name="context">{'default_type':'customer'}</field>
+    <field name="view_id" ref="view_sale_product_pricelsit_tree"/>
+    <field name="search_view_id" ref="view_sale_product_pricelsit_search"/>
+</record>
+
+<menuitem
+    parent="base.menu_product"
+    name="Product Pricelists"
+    action="action_sale_product_pricelist"
+    id="menu_sale_product_pricelist"/>
+
+<!-- ============== PURCHASES ============== -->
+
+<record id="view_purchase_product_pricelsit_tree" model="ir.ui.view">
+    <field name="name">Product Pricelists</field>
+    <field name="model">product.supplierinfo</field>
+    <field name="priority">15</field>
+    <field name="arch" type="xml">
+        <tree string="Product Pricelists">
+            <field name="name" string="Supplier"/>
+            <field name="product_tmpl_id" />
+            <field name="delay" />
+            <field name="min_qty" />
+            <field name="price" />
+        </tree>
+    </field>
+</record>
+
+<record id="view_purchase_product_pricelsit_search" model="ir.ui.view">
+    <field name="name">Product Pricelists</field>
+    <field name="model">product.supplierinfo</field>
+    <field name="arch" type="xml">
+        <search string="Product Pricelists">
+            <field name="product_tmpl_id"/>
+            <field name="name" string="Supplier"/>
+            <field name="product_name"/>
+            <field name="product_code"/>
+            <group expand="0" string="Group By">
+                <filter string="Product" domain="[]" context="{'group_by':'product_tmpl_id'}"/>
+                <filter string="Supplier" domain="[]" context="{'group_by':'name'}"/>
+                <filter string="Partner Unit of Measure" domain="[]" context="{'group_by':'product_uom'}"/>
+                <filter string="Delivery Lead Time" domain="[]" context="{'group_by':'delay'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+<record id="action_purchase_product_pricelist" model="ir.actions.act_window">
+    <field name="name">Product Pricelists</field>
+    <field name="res_model">product.supplierinfo</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('type', '=', 'supplier')]</field>
+    <field name="context">{'default_type':'supplier'}</field>
+    <field name="view_id" ref="view_purchase_product_pricelsit_tree"/>
+    <field name="search_view_id" ref="view_purchase_product_pricelsit_search"/>
+</record>
+
+<menuitem
+    parent="purchase.menu_procurement_management_product"
+    name="Product Pricelists"
+    action="action_purchase_product_pricelist"
+    id="menu_purchase_product_pricelist"/>
+
+
+</data>
+</openerp>
