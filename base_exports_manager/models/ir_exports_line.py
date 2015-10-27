@@ -28,22 +28,23 @@ from openerp.tools.translate import _
 
 class IrExportsLine(models.Model):
     _inherit = 'ir.exports.line'
-    _order = 'sequence'
+    _order = 'sequence,id'
 
     sequence = fields.Integer()
-    label = fields.Char(string='Field Name', compute="_get_label")
+    label = fields.Char(string='Label', compute="_get_label")
 
     def _get_label_string(self):
         self.ensure_one()
         m_field = self.env['ir.model.fields']
         model_name = self.export_id.resource
         label = ''
+        if not self.name:
+            return False
         for field in self.name.split('/'):
             model = self.env['ir.model'].search([('model', '=', model_name)])
             field_obj = model.field_id.filtered(lambda r: r.name == field)
             if not field_obj:
-                raise exceptions.ValidationError(
-                    _("Field '%s/%s' does not exist" % (label, field)))
+                return False
             label = label + _(field_obj.field_description) + '/'
             model_name = field_obj.relation
         return label.rstrip('/') + ' (' + self.name + ')'
@@ -51,9 +52,20 @@ class IrExportsLine(models.Model):
     @api.one
     @api.constrains('name')
     def _check_name(self):
-        self._get_label_string()
+        if not self._get_label_string():
+            raise exceptions.ValidationError(
+                _("Field '%s' does not exist") % self.name)
+        lines = self.search([('export_id', '=', self.export_id.id),
+                             ('name', '=', self.name)])
+        if len(lines) > 1:
+            raise exceptions.ValidationError(
+                _("Field '%s' already exists") % self.name)
 
     @api.one
     @api.depends('name')
     def _get_label(self):
+        self.label = self._get_label_string()
+
+    @api.onchange('name')
+    def _onchange_partner(self):
         self.label = self._get_label_string()
