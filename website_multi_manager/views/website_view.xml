@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="view_website_form" model="ir.ui.view">
+    <field name="name">Add theme selection</field>
+    <field name="model">website</field>
+    <field name="inherit_id" ref="website.view_website_form"/>
+    <field name="arch" type="xml">
+        <field name="name" position="after">
+            <field name="theme"/>
+            <field name="logo" widget='image'/>
+        </field>
+    </field>
+</record>
+
+<template id="layout_logo_show"
+          inherit_id="website.layout_logo_show"
+          name="Website logo">
+    <xpath expr="//img[@src='/logo.png']" position="attributes">
+        <attribute name="src">/website_logo.png</attribute>
+    </xpath>
+</template>
+
+<template id="layout"
+          inherit_id="website.layout"
+          name="Layout without footer"
+          priority="99">
+    <xpath expr="//body//main" position="replace">
+        <t t-raw="0"/>
+    </xpath>
+    <xpath expr="//footer" position="replace"/>
+</template>
+
+<template id="website.footer_ahk_odoo_local_net">
+    <footer>
+        <div class="oe_structure" id="footer">
+            <section data-snippet-id='three-columns'>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h4 class="mt16">Subtitle</h4>
+                            <p>
+                                <a href="/">Homepage</a>
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <h4 class="mt16">Subtitle 2</h4>
+                            <p>
+                                ...
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <h4 class="mt16">Subtitle 3</h4>
+                            <p>
+                                ...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </footer>
+</template>
+
+<template id="website.layout_ahk_odoo_local_net">
+    <main>
+        <t t-raw="0"/>
+    </main>
+    <t t-call="website.footer_ahk_odoo_local_net"/>
+</template>
+
+<template id="website.default_page_ahk_odoo_local_net">
+    <t t-call="website.layout">
+        <t t-call="website.layout_ahk_odoo_local_net">
+            <div id="wrap" class="oe_structure oe_empty"></div>
+        </t>
+    </t>
+</template>
+
+<template id="website.footer_piosphere_odoo_local_net">
+    <footer>
+        <div class="oe_structure" id="footer">
+            <section data-snippet-id='three-columns'>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h4 class="mt16">Subtitle</h4>
+                            <p>
+                                <a href="/">Homepage</a>
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <h4 class="mt16">Subtitle 2</h4>
+                            <p>
+                                ...
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <h4 class="mt16">Subtitle 3</h4>
+                            <p>
+                                ...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </footer>
+</template>
+
+<template id="website.layout_piosphere_odoo_local_net">
+    <main>
+        <t t-raw="0"/>
+    </main>
+    <t t-call="website.footer_piosphere_odoo_local_net"/>
+</template>
+
+<template id="website.default_page_piosphere_odoo_local_net">
+    <t t-call="website.layout">
+        <t t-call="website.layout_piosphere_odoo_local_net">
+            <div id="wrap" class="oe_structure oe_empty"></div>
+        </t>
+    </t>
+</template>
+
+</data>
+</openerp>
